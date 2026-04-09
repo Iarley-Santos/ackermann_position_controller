@@ -1,0 +1,74 @@
+[System]
+Name='ackermann_fuzzy'
+Type='mamdani'
+Version=2.0
+NumInputs=2
+NumOutputs=2
+NumRules=21
+AndMethod='min'
+OrMethod='max'
+ImpMethod='min'
+AggMethod='max'
+DefuzzMethod='centroid'
+
+[Input1]
+Name='rho'
+Range=[0 20]
+NumMFs=5
+MF1='near':'trapmf',[0 0 2 5]
+MF2='medium':'trimf',[3 8 13]
+MF3='far':'trimf',[10 15 18]
+MF4='very_far':'trapmf',[15 18 20 20]
+MF5='zero':'trimf',[0 0.2 0.3]
+
+[Input2]
+Name='e_theta'
+Range=[-3.14 3.14]
+NumMFs=5
+MF1='neg_large':'trapmf',[-3.14 -3.14 -2 -0.8]
+MF2='neg_small':'trimf',[-1.5 -0.6 0]
+MF3='zero':'trimf',[-0.3 0 0.3]
+MF4='pos_small':'trimf',[0 0.6 1.5]
+MF5='pos_large':'trapmf',[0.8 2 3.14 3.14]
+
+[Output1]
+Name='velocity'
+Range=[0 36]
+NumMFs=4
+MF1='stop':'trapmf',[0 0 2 6]
+MF2='slow':'trimf',[4 10 16]
+MF3='medium':'trimf',[14 22 30]
+MF4='fast':'trapmf',[26 32 36 36]
+
+[Output2]
+Name='delta'
+Range=[-0.263 0.263]
+NumMFs=5
+MF1='left_strong':'trapmf',[-0.263 -0.263 -0.18 -0.1]
+MF2='left':'trimf',[-0.18 -0.09 0]
+MF3='straight':'trimf',[-0.02 0 0.02]
+MF4='right':'trimf',[0 0.09 0.18]
+MF5='right_strong':'trapmf',[0.1 0.18 0.263 0.263]
+
+[Rules]
+0 1, 0 1 (1) : 1
+0 2, 0 2 (1) : 1
+0 3, 0 3 (1) : 1
+0 4, 0 4 (1) : 1
+0 5, 0 5 (1) : 1
+0 5, 2 0 (1) : 1
+0 1, 2 0 (1) : 1
+0 4, 3 0 (1) : 1
+0 2, 3 0 (1) : 1
+3 3, 4 0 (1) : 1
+2 3, 3 0 (1) : 1
+1 0, 2 0 (1) : 1
+1 5, 2 0 (1) : 1
+1 1, 2 0 (1) : 1
+5 0, 1 3 (1) : 1
+3 5, 3 0 (1) : 1
+3 1, 3 0 (1) : 1
+2 5, 2 0 (1) : 1
+2 1, 2 0 (1) : 1
+2 4, 3 0 (1) : 1
+2 2, 3 0 (1) : 1
