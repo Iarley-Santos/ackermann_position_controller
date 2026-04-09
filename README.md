@@ -89,6 +89,8 @@ Então ângulo de direção:
 δ = atan(L * ω / v)
 ```
 
+No controlador PID, são utilizados dois controladores separados: um para controlar a velocidade linear baseado na distância ρ, e outro para controlar a velocidade angular baseado no erro de rumo e_θ. Isso resulta em dois laços de controle independentes, o que pode levar a acoplamentos e necessidade de ajuste fino dos ganhos.
+
 ### Ajuste de Ganhos
 
 Os ganhos usados nesta simulação são:
@@ -106,11 +108,15 @@ Estes foram ajustados manualmente para os waypoints específicos e parâmetros d
 5. **Comportamento Oscilatório**: Pode causar oscilações ao redor dos waypoints se os ganhos forem muito altos
 6. **Adaptabilidade Limitada**: Ganhos fixos não se adaptam a condições variáveis
 
+![Trajetória com Controlador PID](images/traj_pid.png)
+
 ## Controlador Fuzzy
 
 ### Visão Geral
 
 A lógica fuzzy fornece uma maneira de modelar sistemas complexos usando variáveis linguísticas e regras em vez de equações matemáticas. Isso a torna adequada para sistemas com incerteza, não linearidade e onde o conhecimento humano pode ser codificado em regras.
+
+O controlador Fuzzy utiliza um único sistema de inferência fuzzy que mapeia os estados (distância ρ e erro de rumo e_θ) diretamente para os comandos de controle (velocidade v e ângulo de direção δ), atuando como um controlador de espaço de estados. Isso contrasta com o PID, que requer dois controladores separados.
 
 ### Vantagens sobre PID
 
@@ -127,6 +133,8 @@ O sistema de inferência é do tipo Mamdani e possui:
 - 2 entradas
 - 2 saídas
 - 21 regras
+
+![Sistema de Inferência Fuzzy](images/system_fuzzy.png)
 
 ### Processo de Fuzzificação
 
@@ -227,6 +235,8 @@ v = ∫ μ_v(z) * z dz / ∫ μ_v(z) dz
 
 Esta abordagem computeia valores nítidos para `velocity` e `delta` a partir dos conjuntos fuzzy agregados pelas regras.
 
+![Trajetória com Controlador Fuzzy](images/traj_fuzzy.png)
+
 ## Implementação da Simulação
 
 ### Estrutura de Arquivos
@@ -281,10 +291,12 @@ A simulação calcula e compara:
 
 | Métrica | PID | Fuzzy |
 |---------|-----|-------|
-| Tempo Total | ~45s | ~42s |
-| Erro Médio | 0.15m | 0.12m |
-| Erro Máximo | 0.45m | 0.38m |
-| Comprimento do Caminho | 18.5m | 17.8m |
+| Tempo Total | 4.50s | 2.10s |
+| Erro Médio | 3.45m | 6.23m |
+| Erro Máximo | 14.50m | 15.11m |
+| Comprimento do Caminho | 41.03m | 32.34m |
+
+![Comparação entre PID e Fuzzy](images/compason_pid_fuzzy.png)
 
 ### Vantagens do Controlador Fuzzy
 
